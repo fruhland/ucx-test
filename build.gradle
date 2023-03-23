@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'de.hhu.bsinfo'
+version '1.0-SNAPSHOT'
+
+application.setApplicationName("ucx-test")
+application.getMainClass().set("de.hhu.bsinfo.UcxTest")
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files("jucx-1.14.0.jar")
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+startScripts {
+    doLast {
+        unixScript.text = unixScript.text.replaceFirst('exec ', 'UCX_ERROR_SIGNALS="" UCX_TCP_CM_REUSEADDR=y exec ')
+    }
+}
+
+wrapper {
+    gradleVersion = "8.0.2"
+}
